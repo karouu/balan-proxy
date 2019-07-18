@@ -17,7 +17,12 @@ if __name__ == "__main__":
     HOST, PORT = "localhost", 9999
 
     # Create the server, binding to localhost on port 9999
+    # socketserver servers don't support use as context managers before Python 3.6.
+    '''
     with socketserver.TCPServer((HOST, PORT), MyTCPHandler) as server:
         # Activate the server; this will keep running until you
         # interrupt the program with Ctrl-C
         server.serve_forever()
+    '''
+    server = socketserver.TCPServer((HOST,PORT), MyTCPHandler)
+    server.serve_forever()
