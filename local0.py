@@ -1,6 +1,8 @@
 #!/usr/bin/env python
+# origin run in python2
+PORT = 1080
+KEY = "foobar!"
 
-# converted from 2to3, python3 now
 import os
 SERVERS = [
         ('xxx.xxx.xx.11', 8499),
@@ -12,13 +14,10 @@ if os.path.exists('list.txt'):
         item = (i.split(':') for i in data if ':' '#' not in i)
         while 1:
             try:
-                i = next(item)
+                i = item.next()
             except:
                 break
             SERVERS.append((i[0], int(i[1])))
-
-PORT = 1080
-KEY = "foobar!"
 
 import sys
 import socket
@@ -28,7 +27,7 @@ import struct
 import hashlib
 import threading
 import time
-import socketserver
+import SocketServer
 
 
 def get_server():
@@ -45,7 +44,7 @@ def get_table(key):
     s = m.digest()
     (a, b) = struct.unpack('<QQ', s)
     table = [c for c in string.maketrans('', '')]
-    for i in range(1, 1024):
+    for i in xrange(1, 1024):
         table.sort(lambda x, y: int(a % (ord(x) + i) - a % (ord(y) + i)))
     return table
 
@@ -57,16 +56,16 @@ my_lock = threading.Lock()
 def lock_print(msg):
     my_lock.acquire()
     try:
-        print("[%s] %s" % (time.ctime(), msg))
+        print "[%s] %s" % (time.ctime(), msg)
     finally:
         my_lock.release()
 
 
-class ThreadingTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+class ThreadingTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass
 
 
-class Socks5Server(socketserver.StreamRequestHandler):
+class Socks5Server(SocketServer.StreamRequestHandler):
     def encrypt(self, data):
         return data.translate(encrypt_table)
 
@@ -99,7 +98,7 @@ class Socks5Server(socketserver.StreamRequestHandler):
 
     def handle(self):
         try:
-            host = next(server)
+            host = server.next()
             sock = self.connection
             remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             remote.connect(host)
@@ -109,19 +108,19 @@ class Socks5Server(socketserver.StreamRequestHandler):
 
 
 def main(host):
-    print('Starting proxy at port %d' % PORT)
+    print 'Starting proxy at port %d' % PORT
     server = ThreadingTCPServer((host, PORT), Socks5Server)
     server.serve_forever()
 
 if __name__ == '__main__':
-    print('Servers: ')
+    print 'Servers: '
     for i in SERVERS:
-        print(i)
+        print i
     arg = sys.argv
     if len(arg) == 1:
         host = ''
-        print("Use default host")
+        print "Use default host"
     else:
         host = arg[1]
-        print("Use host %s" % host)
+        print "Use host %s" % host
     main(host)

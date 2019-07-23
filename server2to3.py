@@ -1,24 +1,5 @@
 #!/usr/bin/env python
-
-# Copyright (c) 2012 clowwindy
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+# converted from 2to3, python3 now
 
 PORT = 8499
 KEY = "foobar!"
@@ -26,7 +7,7 @@ KEY = "foobar!"
 import sys
 import socket
 import select
-import SocketServer
+import socketserver
 import struct
 import string
 import hashlib
@@ -37,16 +18,16 @@ def get_table(key):
     s = m.digest()
     (a, b) = struct.unpack('<QQ', s)
     table = [c for c in string.maketrans('', '')]
-    for i in xrange(1, 1024):
+    for i in range(1, 1024):
         table.sort(lambda x, y: int(a % (ord(x) + i) - a % (ord(y) + i)))
     return table
 
 
-class ThreadingTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+class ThreadingTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
 
 
-class Socks5Server(SocketServer.StreamRequestHandler):
+class Socks5Server(socketserver.StreamRequestHandler):
     def handle_tcp(self, sock, remote):
         try:
             fdset = [sock, remote]
@@ -72,7 +53,7 @@ class Socks5Server(SocketServer.StreamRequestHandler):
 
     def handle(self):
         try:
-            print 'socks connection from ', self.client_address
+            print('socks connection from ', self.client_address)
             sock = self.connection
             sock.recv(262)
             self.send_encrpyt(sock, "\x05\x00")
@@ -96,10 +77,10 @@ class Socks5Server(SocketServer.StreamRequestHandler):
                     local = remote.getsockname()
                     reply += socket.inet_aton(local[0]) + struct.pack(">H",
                         local[1])
-                    print 'Tcp connect to', addr, port[0]
+                    print('Tcp connect to', addr, port[0])
                 else:
                     reply = "\x05\x07\x00\x01" # Command not supported
-                    print 'command not supported'
+                    print('command not supported')
             except socket.error:
                 # Connection refused
                 reply = '\x05\x05\x00\x01\x00\x00\x00\x00\x00\x00'
@@ -108,13 +89,13 @@ class Socks5Server(SocketServer.StreamRequestHandler):
                 if mode == 1:
                     self.handle_tcp(sock, remote)
         except socket.error:
-            print 'socket error'
+            print('socket error')
 
 
 def main(host=''):
     server = ThreadingTCPServer((host, PORT), Socks5Server)
     server.allow_reuse_address = True
-    print "starting server at port %d ..." % PORT
+    print("starting server at port %d ..." % PORT)
     server.serve_forever()
 
 if __name__ == '__main__':
@@ -123,8 +104,8 @@ if __name__ == '__main__':
     arg = sys.argv
     if len(arg) == 1:
         host = ''
-        print "Use default host"
+        print("Use default host")
     else:
-        host = arg[1]    
-        print "Use host %s" % host
+        host = arg[1]
+        print("Use host %s" % host)
     main(host)

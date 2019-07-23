@@ -1,3 +1,8 @@
+# virtualenv
+bin
+lib
+include
+
 *.py[co]
 
 list.txt
@@ -9,7 +14,7 @@ dist
 build
 eggs
 parts
-bin
+
 var
 sdist
 develop-eggs
