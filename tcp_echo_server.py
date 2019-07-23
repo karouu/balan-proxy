@@ -8,6 +8,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.bind( (host,port) )
 sock.listen(1)
 
+print "Tcp socket: %s,$s" % host,socket
 while True:
 	connection, client_address = sock.accept()
 

@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # origin run in python2
+
 PORT = 1080
 KEY = "foobar!"
 
 import os
 SERVERS = [
-        ('xxx.xxx.xx.11', 8499),
+        ('0.0.0.0', 8499),
     ]
 
 if os.path.exists('list.txt'):

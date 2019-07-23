@@ -1,5 +1,6 @@
 # tcp_echo_client.py
 # pip install pysocks
+# sock5 local proxy
 
 import sys, socket, socks
 
