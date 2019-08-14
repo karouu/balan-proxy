@@ -1,13 +1,4 @@
-# virtualenv
-bin
-lib
-include
-local
-share
-
 *.py[co]
-
-list.txt
 
 # Packages
 *.egg
@@ -16,7 +7,7 @@ dist
 build
 eggs
 parts
-
+bin
 var
 sdist
 develop-eggs
@@ -26,7 +17,8 @@ develop-eggs
 pip-log.txt
 
 # Unit test / coverage reports
-.coverage
+htmlcov
+.coverage*
 .tox
 
 #Translations
@@ -34,3 +26,9 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+.DS_Store
+.idea
+
+#Emacs
+.#*
