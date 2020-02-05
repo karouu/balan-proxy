@@ -17,8 +17,7 @@ develop-eggs
 pip-log.txt
 
 # Unit test / coverage reports
-htmlcov
-.coverage*
+.coverage
 .tox
 
 #Translations
@@ -26,9 +25,3 @@ htmlcov
 
 #Mr Developer
 .mr.developer.cfg
-
-.DS_Store
-.idea
-
-#Emacs
-.#*
