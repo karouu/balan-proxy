@@ -3,8 +3,8 @@
 # https://web.archive.org/web/20120419032623/http://xiaoxia.org/2011/03/29/written-by-python-socks5-server/
 
 
-import socket, sys, select, SocketServer, struct,
-import time
+import socket, select, SocketServer
+import sys, struct, time
 
 class ThreadingTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass

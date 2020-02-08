@@ -3,7 +3,7 @@
 
 import os
 SERVERS = [
-        ('xxx.xxx.xx.11', 8499),
+        ('192.168.1.6', 8499),
     ]
 
 if os.path.exists('list.txt'):
