@@ -11,6 +11,7 @@ message_queues = {}
 while inputs:
     readable, writable, exceptional = select.select(
         inputs, outputs, inputs)
+
     for s in readable:
         if s is server:
             connection, client_address = s.accept()
